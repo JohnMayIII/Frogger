@@ -92,11 +92,22 @@ class Frogger{
         this.goalZoneColor = "rgb(7, 7, 87)"
         this.goalZoneBorder = "lightgreen"
 
-        this.goalZone = [
-            {x:50,y:0,w:0}, {x:165,y:0,w:0}, {x:280,y:0,w:0}, {x:390,y:0,w:0}, {x:500,y:0,w:0}
-        ] 
+        this.goalZone = {x:50,y:0,w:0}
+        this.goalZone2 = {x:165,y:0,w:0}
+        this.goalZone3 = {x:280,y:0,w:0}
+        this.goalZone4 = {x:390,y:0,w:0}
+        this.goalZone5 = {x:500,y:0,w:0}
+
+        this.gZBool = false
+        this.gZBool2 = false
+        this.gZBool3 = false
+        this.gZBool4 = false
+        this.gZBool5 = false
+
 
         this.lives = 6
+        this.bankedFrogs = 0
+
     }
 
     init(){
@@ -104,6 +115,8 @@ class Frogger{
         setTimeout(()=>{
             this.clearCanvas()
             this.drawBoard()
+            this.drawBankedFrogs()
+            this.initBankedFrog()
             this.spawnLogs()
             this.drawFrog()
             this.moveLogs()
@@ -112,6 +125,7 @@ class Frogger{
             this.moveCars()
             this.respawnCars()
             this.frogDeath()
+            this.gameWin()
             this.rideLog()
             this.hasGameEnded()
             if(this.gameEnded != true){
@@ -137,7 +151,12 @@ class Frogger{
         const sideWalk = this.sideWalk
         const grassBed = this.grassBed
         const river = this.river
+
         const goalZone = this.goalZone
+        const goalZone2 = this.goalZone2
+        const goalZone3 = this.goalZone3
+        const goalZone4 = this.goalZone4
+        const goalZone5 = this.goalZone5
 
         sideWalk.forEach(part =>{
             context.fillStyle = this.sideWalkColor
@@ -153,13 +172,37 @@ class Frogger{
             context.strokeRect(part.x, part.y, 600, 50)
         })
 
-        goalZone.forEach(part =>{
-            context.fillStyle = this.goalZoneColor
-            context.strokeStyle = this.goalZoneBorder
-            context.fillRect(part.x, part.y, 50, 50)
-            context.strokeRect(part.x, part.y, 50, 50)
-            part.w = part.x + 50
-        })
+
+        context.fillStyle = this.goalZoneColor
+        context.strokeStyle = this.goalZoneBorder
+        context.fillRect(goalZone.x, goalZone.y, 50, 50)
+        context.strokeRect(goalZone.x, goalZone.y, 50, 50)
+        goalZone.w = goalZone.x + 50
+
+        context.fillStyle = this.goalZoneColor
+        context.strokeStyle = this.goalZoneBorder
+        context.fillRect(goalZone2.x, goalZone2.y, 50, 50)
+        context.strokeRect(goalZone2.x, goalZone2.y, 50, 50)
+        goalZone2.w = goalZone2.x + 50
+
+        context.fillStyle = this.goalZoneColor
+        context.strokeStyle = this.goalZoneBorder
+        context.fillRect(goalZone3.x, goalZone3.y, 50, 50)
+        context.strokeRect(goalZone3.x, goalZone3.y, 50, 50)
+        goalZone3.w = goalZone3.x + 50
+
+        context.fillStyle = this.goalZoneColor
+        context.strokeStyle = this.goalZoneBorder
+        context.fillRect(goalZone4.x, goalZone4.y, 50, 50)
+        context.strokeRect(goalZone4.x, goalZone4.y, 50, 50)
+        goalZone4.w = goalZone4.x + 50
+
+        context.fillStyle = this.goalZoneColor
+        context.strokeStyle = this.goalZoneBorder
+        context.fillRect(goalZone5.x, goalZone5.y, 50, 50)
+        context.strokeRect(goalZone5.x, goalZone5.y, 50, 50)
+        goalZone5.w = goalZone5.x + 50
+
 
         river.forEach(part =>{
             context.fillStyle = this.riverColor
@@ -742,28 +785,101 @@ class Frogger{
         }
     }
 
-    frogGoal(){
+    gameWin(){
+        if(this.bankedFrogs == 5){
+            this.gameEnded = true
+        }
+    }
+
+    resultDisplay(){
+        if(this.gameEnded == true){
+            
+        }
+    }
+
+    initBankedFrog(){
         const frog = this.frog
+
         const goalZone = this.goalZone
+        const goalZone2 = this.goalZone2
+        const goalZone3 = this.goalZone3
+        const goalZone4 = this.goalZone4
+        const goalZone5 = this.goalZone5
 
         if(frog.y == 0){
-            goalZone.forEach(part =>{
-                if(frog.hw >= part.x && frog.hw <= part.w){
-                    frog.x = 300
-                    frog.y = 600
-
-                    context.fillStyle = this.frogColor
-                    context.strokeStyle = this.riverColor
-                    context.fillRect(part.x, part.y, 50, 50)
-                    context.strokeRect(part.x, part.y, 50, 50)
-                }else{
-                    this.lives--
-                    frog.x = 300
-                    frog.y = 600
-                }
-            })
+            if(frog.hw >= goalZone.x && frog.hw <= goalZone.w){
+                this.gZBool = true
+                this.bankedFrogs += 1
+                frog.x = 300
+                frog.y = 600
+            }else if(frog.hw >= goalZone2.x && frog.hw <= goalZone2.w){
+                this.gZBool2 = true
+                this.bankedFrogs += 1
+                frog.x = 300
+                frog.y = 600
+            }else if(frog.hw >= goalZone3.x && frog.hw <= goalZone3.w){
+                this.gZBool3 = true
+                this.bankedFrogs += 1
+                frog.x = 300
+                frog.y = 600
+            }else if(frog.hw >= goalZone4.x && frog.hw <= goalZone4.w){
+                this.gZBool4 = true
+                this.bankedFrogs += 1
+                frog.x = 300
+                frog.y = 600
+            }else if(frog.hw >= goalZone5.x && frog.hw <= goalZone5.w){
+                this.gZBool5 = true
+                this.bankedFrogs += 1
+                frog.x = 300
+                frog.y = 600
+            }else{
+                this.lives--
+                frog.x = 300
+                frog.y = 600
+            }
         }
+    }
 
+    drawBankedFrogs(){
+        const context = this.frogBoardCtx
+
+        const goalZone = this.goalZone
+        const goalZone2 = this.goalZone2
+        const goalZone3 = this.goalZone3
+        const goalZone4 = this.goalZone4
+        const goalZone5 = this.goalZone5
+
+        if(this.gZBool == true){
+            context.fillStyle = this.frogColor
+            context.strokeStyle = this.riverColor
+            context.fillRect(goalZone.x, goalZone.y, 50, 50)
+            context.strokeRect(goalZone.x, goalZone.y, 50, 50)
+
+        }if(this.gZBool2 == true){
+            context.fillStyle = this.frogColor
+            context.strokeStyle = this.riverColor
+            context.fillRect(goalZone2.x, goalZone2.y, 50, 50)
+            context.strokeRect(goalZone2.x, goalZone2.y, 50, 50)
+
+        }if(this.gZBool3 == true){
+            context.fillStyle = this.frogColor
+            context.strokeStyle = this.riverColor
+            context.fillRect(goalZone3.x, goalZone3.y, 50, 50)
+            context.strokeRect(goalZone3.x, goalZone3.y, 50, 50)
+
+        } if(this.gZBool4 == true){
+            context.fillStyle = this.frogColor
+            context.strokeStyle = this.riverColor
+            context.fillRect(goalZone4.x, goalZone4.y, 50, 50)
+            context.strokeRect(goalZone4.x, goalZone4.y, 50, 50)
+
+        } if(this.gZBool5 == true){
+            context.fillStyle = this.frogColor
+            context.strokeStyle = this.riverColor
+            context.fillRect(goalZone5.x, goalZone5.y, 50, 50)
+            context.strokeRect(goalZone5.x, goalZone5.y, 50, 50)
+
+        }
 
     }
 
