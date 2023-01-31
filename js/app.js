@@ -6,7 +6,7 @@ class Frogger{
         this.sideWalkColor = 'purple'
         this.sideWalkBorder = 'rgb(187, 0, 255)'
         this.sideWalk =  [
-            {x:0,y:600},{x:0,y:300}
+            {x:0,y:600},{x:0,y:300},{x:0, y:650}
         ]
 
         this.grassBedColor = 'lightgreen'
@@ -27,7 +27,7 @@ class Frogger{
         this.frogBoardCtx = frogBoard.getContext('2d')
 
         this.frogColor = 'green'
-        this.frogBorder = 'green'
+        this.frogBorder = 'black'
         this.frog = {x:300,y:600,hw:0,w:0}
         
         this.LogColor = 'rgb(129, 58, 27)'
@@ -104,6 +104,11 @@ class Frogger{
         this.gZBool4 = false
         this.gZBool5 = false
 
+        this.life = {x:25, y:650}
+        this.life2 = {x:100, y:650}
+        this.life3 = {x:175, y:650}
+        this.life4 = {x:250, y:650}
+        this.life5 = {x:325, y:650}
 
         this.lives = 6
         this.bankedFrogs = 0
@@ -115,6 +120,8 @@ class Frogger{
         setTimeout(()=>{
             this.clearCanvas()
             this.drawBoard()
+            this.loseLives()
+            this.drawLives()
             this.drawBankedFrogs()
             this.initBankedFrog()
             this.spawnLogs()
@@ -127,13 +134,72 @@ class Frogger{
             this.frogDeath()
             this.gameWin()
             this.rideLog()
+            this.resultDisplay()
             this.hasGameEnded()
+            if(this.gameEnded == true){
+                this.drawBankedFrogs()
+                this.resultDisplay()
+            }
             if(this.gameEnded != true){
                 this.init()
             }
 
         })
 
+    }
+
+    drawLives(){
+        const context = this.frogBoardCtx
+
+        const life = this.life
+        const life2 = this.life2
+        const life3 = this.life3
+        const life4 = this.life4
+        const life5 = this.life5
+
+        context.fillStyle = this.frogColor
+        context.strokeStyle = this.frogBorder
+        context.fillRect(life.x, life.y, 50, 50)
+        context.strokeRect(life.x, life.y, 50, 50)
+
+        context.fillStyle = this.frogColor
+        context.strokeStyle = this.frogBorder
+        context.fillRect(life2.x, life2.y, 50, 50)
+        context.strokeRect(life2.x, life2.y, 50, 50)
+        
+        context.fillStyle = this.frogColor
+        context.strokeStyle = this.frogBorder
+        context.fillRect(life3.x, life3.y, 50, 50)
+        context.strokeRect(life3.x, life3.y, 50, 50)
+        
+        context.fillStyle = this.frogColor
+        context.strokeStyle = this.frogBorder
+        context.fillRect(life4.x, life4.y, 50, 50)
+        context.strokeRect(life4.x, life4.y, 50, 50)
+        
+        context.fillStyle = this.frogColor
+        context.strokeStyle = this.frogBorder
+        context.fillRect(life5.x, life5.y, 50, 50)
+        context.strokeRect(life5.x, life5.y, 50, 50)
+        
+    }
+
+    loseLives(){
+        if(this.lives == 5){
+            this.life5.x = -50
+        }
+        if(this.lives == 4){
+            this.life4.x = -50
+        }
+        if(this.lives == 3){
+            this.life3.x = -50
+        }
+        if(this.lives == 2){
+            this.life2.x = -50
+        }
+        if(this.lives == 1){
+            this.life.x = -50
+        }
     }
 
     clearCanvas(){
@@ -792,8 +858,15 @@ class Frogger{
     }
 
     resultDisplay(){
+        var gameResult = document.getElementById('gameResult')
+        
         if(this.gameEnded == true){
-            
+            if(this.bankedFrogs == 5){
+                gameResult.innerText = 'You Won!'
+            }
+            else{
+                gameResult.innerText = 'You Lost!'
+            }
         }
     }
 
