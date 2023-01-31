@@ -186,19 +186,19 @@ class Frogger{
 
     loseLives(){
         if(this.lives == 5){
-            this.life5.x = -50
+            this.life5.x = -51
         }
         if(this.lives == 4){
-            this.life4.x = -50
+            this.life4.x = -51
         }
         if(this.lives == 3){
-            this.life3.x = -50
+            this.life3.x = -51
         }
         if(this.lives == 2){
-            this.life2.x = -50
+            this.life2.x = -51
         }
         if(this.lives == 1){
-            this.life.x = -50
+            this.life.x = -51
         }
     }
 
